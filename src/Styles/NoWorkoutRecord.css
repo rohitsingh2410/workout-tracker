@@ -1,0 +1,9 @@
+.no-workout-sign{
+    display:flex;
+    margin:2%;
+    height: 42px;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    background: beige;
+}

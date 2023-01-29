@@ -1,0 +1,9 @@
+.plans{
+    display:flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.plans img{
+    width: 25%;
+}
