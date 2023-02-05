@@ -2,3 +2,7 @@
     height: 100%;
     width: 100%;
 }
+
+.workout-page-split-section .ui.vertical.menu {
+    width: auto !important;
+}

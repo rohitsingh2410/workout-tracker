@@ -1,0 +1,15 @@
+.register-page-form {
+    width: 70%;
+    margin-top: 45%;
+}
+
+.register-page-container {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.form-group-end{
+    display: flex;
+    flex-direction: column;
+}

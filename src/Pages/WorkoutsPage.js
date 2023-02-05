@@ -7,32 +7,13 @@ import {
   Button,
   Accordion,
   Form,
+  Tab,
 } from "semantic-ui-react";
 import HeaderComponent from "../components/HeaderComponent";
+import WorkoutInputTableComponent from "../components/WorkoutInputTableComponent";
 import "../Styles/WorkoutPage.css";
 import { SAMPLE_PPL } from "../Config/config";
 
-const ColorForm = (
-  <Form>
-    <Form.Group grouped>
-      <Form.Checkbox label="Red" name="color" value="red" />
-      <Form.Checkbox label="Orange" name="color" value="orange" />
-      <Form.Checkbox label="Green" name="color" value="green" />
-      <Form.Checkbox label="Blue" name="color" value="blue" />
-    </Form.Group>
-  </Form>
-);
-
-const SizeForm = (
-  <Form>
-    <Form.Group grouped>
-      <Form.Radio label="Small" name="size" type="radio" value="small" />
-      <Form.Radio label="Medium" name="size" type="radio" value="medium" />
-      <Form.Radio label="Large" name="size" type="radio" value="large" />
-      <Form.Radio label="X-Large" name="size" type="radio" value="x-large" />
-    </Form.Group>
-  </Form>
-);
 
 export default class WorkoutsPage extends Component {
   constructor(props) {
@@ -40,11 +21,16 @@ export default class WorkoutsPage extends Component {
     this.state = {
       split: null,
       activeIndex: 0,
+      dayIndex: 0,
+      activeTab:5
     };
   }
   async componentDidMount() {
+    let d = new Date();
+    let dayIndex = d.getDay();
     this.setState({
       split: SAMPLE_PPL,
+      dayIndex: dayIndex,
     });
   }
 
@@ -55,9 +41,10 @@ export default class WorkoutsPage extends Component {
 
     this.setState({ activeIndex: newIndex });
   };
+  handleTabChange = (e, { activeTab }) => this.setState({ activeTab })
 
   render() {
-    const { activeIndex } = this.state;
+    const { activeIndex ,activeTab} = this.state;
 
     return (
       <div className="workout-page-container">
@@ -67,33 +54,302 @@ export default class WorkoutsPage extends Component {
           subheader="6 days split "
         />
         <div className="workout-page-split-section">
-          <Accordion as={Menu} vertical>
-            <Menu.Item>
-              <Accordion.Title
-                active={activeIndex === 0}
-                content="Size"
-                index={0}
-                onClick={this.handleClick}
-              />
-              <Accordion.Content
-                active={activeIndex === 0}
-                content={SizeForm}
-              />
-            </Menu.Item>
-
-            <Menu.Item>
-              <Accordion.Title
-                active={activeIndex === 1}
-                content="Colors"
-                index={1}
-                onClick={this.handleClick}
-              />
-              <Accordion.Content
-                active={activeIndex === 1}
-                content={ColorForm}
-              />
-            </Menu.Item>
-          </Accordion>
+          <div className="workout-day-slider">
+            <Tab
+            activeIndex={activeTab}
+            onTabChange={this.handleTabChange}
+              menu={{ secondary: true, pointing: true }}
+              panes={[
+                {
+                  menuItem: "Mon",
+                  render: () => (
+                    <Tab.Pane>
+                      {SAMPLE_PPL[0].workouts.map((elem, idx) => {
+                        return (
+                          <Accordion as={Menu} vertical>
+                            <Menu.Item>
+                              <Accordion.Title
+                                active={activeIndex === idx}
+                                content={
+                                  elem.name +
+                                  " ( " +
+                                  elem.reps +
+                                  "reps " +
+                                  elem.sets +
+                                  " sets)"
+                                }
+                                index={idx}
+                                onClick={this.handleClick}
+                              />
+                              <Accordion.Content
+                                active={activeIndex === idx}
+                                content={
+                                  <WorkoutInputTableComponent
+                                    workoutDetails={{
+                                      name: elem.name,
+                                      reps: elem.reps,
+                                      sets: elem.sets,
+                                      id: elem.id,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Menu.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </Tab.Pane>
+                  ),
+                },
+                {
+                  menuItem: "Tue",
+                  render: () => (
+                    <Tab.Pane>
+                      {SAMPLE_PPL[1].workouts.map((elem, idx) => {
+                        return (
+                          <Accordion as={Menu} vertical>
+                            <Menu.Item>
+                              <Accordion.Title
+                                active={activeIndex === idx}
+                                content={
+                                  elem.name +
+                                  " ( " +
+                                  elem.reps +
+                                  "reps " +
+                                  elem.sets +
+                                  " sets)"
+                                }
+                                index={idx}
+                                onClick={this.handleClick}
+                              />
+                              <Accordion.Content
+                                active={activeIndex === idx}
+                                content={
+                                  <WorkoutInputTableComponent
+                                    workoutDetails={{
+                                      name: elem.name,
+                                      reps: elem.reps,
+                                      sets: elem.sets,
+                                      id: elem.id,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Menu.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </Tab.Pane>
+                  ),
+                },
+                {
+                  menuItem: "Wed",
+                  render: () => (
+                    <Tab.Pane>
+                      {SAMPLE_PPL[2].workouts.map((elem, idx) => {
+                        return (
+                          <Accordion as={Menu} vertical>
+                            <Menu.Item>
+                              <Accordion.Title
+                                active={activeIndex === idx}
+                                content={
+                                  elem.name +
+                                  " ( " +
+                                  elem.reps +
+                                  "reps " +
+                                  elem.sets +
+                                  " sets)"
+                                }
+                                index={idx}
+                                onClick={this.handleClick}
+                              />
+                              <Accordion.Content
+                                active={activeIndex === idx}
+                                content={
+                                  <WorkoutInputTableComponent
+                                    workoutDetails={{
+                                      name: elem.name,
+                                      reps: elem.reps,
+                                      sets: elem.sets,
+                                      id: elem.id,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Menu.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </Tab.Pane>
+                  ),
+                },
+                {
+                  menuItem: "Thu",
+                  render: () => (
+                    <Tab.Pane>
+                      {SAMPLE_PPL[3].workouts.map((elem, idx) => {
+                        return (
+                          <Accordion as={Menu} vertical>
+                            <Menu.Item>
+                              <Accordion.Title
+                                active={activeIndex === idx}
+                                content={
+                                  elem.name +
+                                  " ( " +
+                                  elem.reps +
+                                  "reps " +
+                                  elem.sets +
+                                  " sets)"
+                                }
+                                index={idx}
+                                onClick={this.handleClick}
+                              />
+                              <Accordion.Content
+                                active={activeIndex === idx}
+                                content={
+                                  <WorkoutInputTableComponent
+                                    workoutDetails={{
+                                      name: elem.name,
+                                      reps: elem.reps,
+                                      sets: elem.sets,
+                                      id: elem.id,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Menu.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </Tab.Pane>
+                  ),
+                },
+                {
+                  menuItem: "Fri",
+                  render: () => (
+                    <Tab.Pane>
+                      {SAMPLE_PPL[4].workouts.map((elem, idx) => {
+                        return (
+                          <Accordion as={Menu} vertical>
+                            <Menu.Item>
+                              <Accordion.Title
+                                active={activeIndex === idx}
+                                content={
+                                  elem.name +
+                                  " ( " +
+                                  elem.reps +
+                                  "reps " +
+                                  elem.sets +
+                                  " sets)"
+                                }
+                                index={idx}
+                                onClick={this.handleClick}
+                              />
+                              <Accordion.Content
+                                active={activeIndex === idx}
+                                content={
+                                  <WorkoutInputTableComponent
+                                    workoutDetails={{
+                                      name: elem.name,
+                                      reps: elem.reps,
+                                      sets: elem.sets,
+                                      id: elem.id,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Menu.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </Tab.Pane>
+                  ),
+                },
+                {
+                  menuItem: "Sat",
+                  render: () => (
+                    <Tab.Pane>
+                      {SAMPLE_PPL[5].workouts.map((elem, idx) => {
+                        return (
+                          <Accordion as={Menu} vertical>
+                            <Menu.Item>
+                              <Accordion.Title
+                                active={activeIndex === idx}
+                                content={
+                                  elem.name +
+                                  " ( " +
+                                  elem.reps +
+                                  "reps " +
+                                  elem.sets +
+                                  " sets)"
+                                }
+                                index={idx}
+                                onClick={this.handleClick}
+                              />
+                              <Accordion.Content
+                                active={activeIndex === idx}
+                                content={
+                                  <WorkoutInputTableComponent
+                                    workoutDetails={{
+                                      name: elem.name,
+                                      reps: elem.reps,
+                                      sets: elem.sets,
+                                      id: elem.id,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Menu.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </Tab.Pane>
+                  ),
+                },
+                {
+                  menuItem: "Sun",
+                  render: () => (
+                    <Tab.Pane>
+                      {SAMPLE_PPL[6].workouts.map((elem, idx) => {
+                        return (
+                          <Accordion as={Menu} vertical>
+                            <Menu.Item>
+                              <Accordion.Title
+                                active={activeIndex === idx}
+                                content={
+                                  elem.name +
+                                  " ( " +
+                                  elem.reps +
+                                  "reps " +
+                                  elem.sets +
+                                  " sets)"
+                                }
+                                index={idx}
+                                onClick={this.handleClick}
+                              />
+                              <Accordion.Content
+                                active={activeIndex === idx}
+                                content={
+                                  <WorkoutInputTableComponent
+                                    workoutDetails={{
+                                      name: elem.name,
+                                      reps: elem.reps,
+                                      sets: elem.sets,
+                                      id: elem.id,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Menu.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </Tab.Pane>
+                  ),
+                },
+              ]}
+            />
+          </div>
         </div>
       </div>
     );

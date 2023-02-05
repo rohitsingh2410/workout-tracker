@@ -75,7 +75,7 @@ export default class AddWorkoutPage extends Component {
           <>
             <div className="workout-day-slider">
               <Tab
-                menu={{ fluid: true, vertical: true, tabular: true }}
+                menu={{ secondary: true, pointing: true }}
                 panes={[
                   {
                     menuItem: "Mon",

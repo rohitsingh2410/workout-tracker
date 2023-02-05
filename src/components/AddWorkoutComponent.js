@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Icon, Label, Menu, Table, Button } from "semantic-ui-react";
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+const excersises = require("../Config/excersise.json");
 
 export default class AddWorkoutComponent extends Component {
   constructor(props) {
@@ -95,6 +97,35 @@ export default class AddWorkoutComponent extends Component {
     this.props.setDailyLog(newLog);
     console.log("rem",idx);
   }
+
+  handleOnSearch = (string, results) => {
+    // onSearch will have as the first callback parameter
+    // the string searched and for the second the results.
+    console.log(string, results)
+  }
+
+  handleOnHover = (result) => {
+    // the item hovered
+    console.log(result)
+  }
+
+  handleOnSelect = (item) => {
+    // the item selected
+    console.log(item)
+    this.setState({current: item.name})
+  }
+
+  handleOnFocus = () => {
+    console.log('Focused')
+  }
+
+  formatResult = (item) => {
+    return (
+      <>
+        <span style={{ display: 'block', textAlign: 'left' }}>{item.name}</span>
+      </>
+    )
+  }
   render() {
     var { sets, reps, current, dailyLog } = this.state;
     return (
@@ -103,11 +134,37 @@ export default class AddWorkoutComponent extends Component {
           <span>
             Add workout for {this.props.day} {this.props.idx}:
           </span>
-          <input
+          {/* <input
             placeholder="add workout name"
             onChange={(e) => this.handleWorkoutChange(e)}
             name="current"
             value={current}
+          /> */}
+           <ReactSearchAutocomplete
+            items={excersises.exercises}
+            onSearch={(e)=>this.handleOnSearch(e)}
+            onHover={(e)=>this.handleOnHover(e)}
+            onSelect={(e)=>this.handleOnSelect(e)}
+            onFocus={(e)=>this.handleOnFocus(e)}
+            autoFocus
+            name="current"
+            formatResult={(e)=>this.formatResult(e)}
+            styling={{
+              height: "34px",
+              border: "1px solid darkblue",
+              borderRadius: "4px",
+              backgroundColor: "white",
+              boxShadow: "none",
+              hoverBackgroundColor: "lightblue",
+              color: "darkblue",
+              fontSize: "12px",
+              fontFamily: "Courier",
+              iconColor: "blue",
+              lineColor: "lightblue",
+              placeholderColor: "darkblue",
+              clearIconMargin: "3px 8px 0 0",
+              zIndex: 2,
+            }}
           />
 
           <input

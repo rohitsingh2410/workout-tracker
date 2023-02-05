@@ -6,16 +6,19 @@ export const SAMPLE_PPL = [
         name: "Bench Press",
         reps: 8,
         sets: 4,
+        id:0
       },
       {
         name: "Tricep pushdown",
         reps: 8,
         sets: 4,
+        id:1
       },
       {
         name: "Incline Bench Press",
         reps: 8,
         sets: 4,
+        id:2
       },
     ],
   },
