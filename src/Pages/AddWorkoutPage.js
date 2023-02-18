@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Tab, Button } from "semantic-ui-react";
+import { ApiCalls } from "../ApiCalls";
 import AddWorkoutComponent from "../components/AddWorkoutComponent";
 import HeaderComponent from "../components/HeaderComponent";
 import "../Styles/AddWorkout.css";
@@ -59,6 +60,24 @@ export default class AddWorkoutPage extends Component {
     this.setState({
       splitDetailsAdded: true,
     });
+  }
+  async submit(e, type) {
+    e.preventDefault();
+    console.log("type", type);
+    if (type === "cancel") {
+      window.location = "/feed";
+    }
+    console.log("workout json", this.state);
+    let workout = {
+      splitName: this.state.splitName,
+      splitComments: this.state.splitComments,
+      dailyLog: this.state.dailyLog,
+    };
+    let create = await ApiCalls.createWorkout(workout);
+    if(create.status){
+      window.location = "/feed";
+    }
+    console.log("create", create);
   }
   render() {
     let { dailyLog, splitDetailsAdded, splitName, splitComments } = this.state;
@@ -178,9 +197,13 @@ export default class AddWorkoutPage extends Component {
             </div>
             <div className="workout-action">
               <Button.Group>
-                <Button>Cancel</Button>
+                <Button onClick={(e) => this.submit(e, "cancel")}>
+                  Cancel
+                </Button>
                 <Button.Or />
-                <Button positive>Save</Button>
+                <Button positive onClick={(e) => this.submit(e, "submit")}>
+                  Save
+                </Button>
               </Button.Group>
             </div>
           </>

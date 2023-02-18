@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Link, Route, Switch } from "react-router-dom";
 import FeedPage from "./FeedPage";
@@ -7,7 +7,13 @@ import WorkoutListsPage from "./Pages/WorkoutListsPage";
 import WorkoutsPage from "./Pages/WorkoutsPage";
 import RegisterPage from "./Pages/RegisterPage";
 import LoginPage from "./Pages/LoginPage";
+import BottomNavBar from "./components/BottomNavBar";
+import Stats from "./Pages/Stats";
+import Community from "./Pages/Community";
+import Settings from "./Pages/Settings";
+
 function App() {
+  
   return (
     <>
       <Switch>
@@ -17,7 +23,11 @@ function App() {
         <Route exact path="/workout" component={WorkoutsPage} />
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/stats" component={Stats} />
+        <Route exact path="/community" component={Community} />
+        <Route exact path="/settings" component={Settings} />
       </Switch>
+      <BottomNavBar/>
     </>
   );
 }

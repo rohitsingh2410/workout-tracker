@@ -23,10 +23,10 @@ export default function PlanLayout() {
       <h3>My Plans</h3>
 
       <div className="plans">
-      
-      <img alt="img" src={addWorkout} onClick={(e)=>routeChange("/addworkout")}/>
       <img alt="img" src={starWorkout} onClick={(e)=>routeChange("/workoutlists")} />
-      <img alt="img" src={trackCardio} />
+
+      <img alt="img" src={addWorkout} onClick={(e)=>routeChange("/addworkout")}/>
+      {/* <img alt="img" src={trackCardio} /> */}
      
       </div>
     </div>

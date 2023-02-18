@@ -16,8 +16,8 @@ export class Validators {
       case "password":
       case "confirm":
         
-        if (data.length<=4) {
-            return { status: false, message: "Password length is too short" };
+        if (data.length<6) {
+            return { status: false, message: "password must be at least 6 characters" };
           }
         break;
       case "email":

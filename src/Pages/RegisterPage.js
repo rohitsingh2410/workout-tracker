@@ -7,14 +7,15 @@ import {
   Radio,
   Select,
   TextArea,
+  Message,
 } from "semantic-ui-react";
 import "../Styles/RegisterPage.css";
 import { Validators } from "../Validators";
-
+import { ApiCalls } from "../ApiCalls";
 const options = [
   { key: "m", text: "Male", value: "male" },
   { key: "f", text: "Female", value: "female" },
-  { key: "o", text: "Other", value: "other" },
+  { key: "o", text: "Other", value: "others" },
 ];
 
 class RegisterPage extends Component {
@@ -29,15 +30,21 @@ class RegisterPage extends Component {
     err_gender: "",
     err_password: "",
     err_confirm: "",
+    reg_error: "",
+    loading: false,
   };
 
   handleChange = async (e, { errClass, name, value }) => {
+    if(this.state.reg_error){
+      this.setState({ reg_error:""})
+    }
     let status = await Validators.validateString(value, name);
+    this.setState({ [name]: value });
     this.setState({
       [errClass]: status.message,
     });
     if (name === "confirm") {
-      if (this.state.confirm !== this.state.password) {
+      if (value !== this.state.password) {
         this.setState({
           err_confirm: "Passwords doesn't matches",
         });
@@ -47,12 +54,26 @@ class RegisterPage extends Component {
         });
       }
     }
-    this.setState({ [name]: value });
   };
-  register(e) {
+  async register(e) {
     e.preventDefault();
+    this.setState({ loading: true });
+    const { name, email, gender, password } = this.state;
+    let data = {
+      username: email,
+      email: email,
+      password: password,
+      gender: gender,
+      name: name,
+    };
+    let user = await ApiCalls.registerUser(data);
+    console.log("user",user)
+    if (!user.status) {
+      this.setState({ reg_error: user.message });
+    }
+    this.setState({ loading: false });
   }
-  redirect(path){
+  redirect(path) {
     window.location = path;
   }
   render() {
@@ -67,6 +88,8 @@ class RegisterPage extends Component {
       err_email,
       err_gender,
       err_password,
+      reg_error,
+      loading,
     } = this.state;
     return (
       <div className="register-page-container">
@@ -160,15 +183,28 @@ class RegisterPage extends Component {
                 }
               />
             </Form.Group>
+            {reg_error ? (
+              <Message negative>
+                <Message.Header>{reg_error}</Message.Header>
+              </Message>
+            ) : null}
             <div className="form-group-end">
-              <Button basic color="blue" onClick={(e) => this.register(e)}>
-                Register
-              </Button>
-              <span style={{marginTop:"5%" }}>
+              {loading ? (
+                <Button loading>Loading</Button>
+              ) : (
+                <Button basic color="blue" onClick={(e) => this.register(e)}>
+                  Register
+                </Button>
+              )}
+
+              <span style={{ marginTop: "5%" }}>
                 Already have an account?{" "}
-                <a style={{ color: "blue"}}
+                <a
+                  style={{ color: "blue" }}
                   onClick={(e) => this.redirect("/login")}
-                >Login here</a>
+                >
+                  Login here
+                </a>
               </span>
             </div>
           </Form>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Icon, Label, Menu, Table, Button } from "semantic-ui-react";
+import { ApiCalls } from "../ApiCalls";
 import "../Styles/WorkoutInputTable.css";
 
 export default class WorkoutInputTableComponent extends Component {
@@ -10,15 +11,37 @@ export default class WorkoutInputTableComponent extends Component {
       setsToPerform: 0,
       workoutName: "",
       details: [],
+      lastWorkoutLog:[]
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     const { workoutDetails } = this.props;
     console.log("workoutDetails", workoutDetails);
+    let date = workoutDetails.date;
+    // check if data is log is present for this data.
+    // if yes, show that, if not show default.
     let currentContent = [];
-    for (let i = 0; i < workoutDetails.sets; i++) {
+    let previousLog = await ApiCalls.searchLog({
+      date:date,
+      workoutName:workoutDetails.name
+    })
+    console.log("previousLog",previousLog)
+    var previousLogCount=0;
+    if(previousLog.status){
+      previousLog.data.data.forEach(elem=>{
+        currentContent.push(elem); 
+        previousLogCount++;
+      })
+    }
+    if(previousLog.lastWorkoutLog){
+      console.log("lastWorkoutLog",previousLog.lastWorkoutLog)
+      this.setState({lastWorkoutLog: previousLog.lastWorkoutLog})
+    }
+    console.log("previousLogCount",previousLogCount)
+    for (let i = 0; i < workoutDetails.sets-previousLogCount; i++) {
       currentContent.push({ reps: null, kg: null, done: false });
     }
+    
     this.setState({
       repsToPerform: workoutDetails.reps,
       setsToPerform: workoutDetails.sets,
@@ -36,9 +59,20 @@ export default class WorkoutInputTableComponent extends Component {
       details: details,
     });
   }
-  handleCheck(e, idx) {
+  async handleCheck(e, idx) {
+    const { workoutDetails } = this.props;
+    let date = workoutDetails.date;
     let details = this.state.details;
     details[idx].done = !details[idx].done;
+    
+    let detailsToSend = details.filter(function(detail) {
+      return detail.done===true
+    })
+    console.log("check ",date,workoutDetails.name,detailsToSend)
+    let tosend={
+      date:date,workoutName:workoutDetails.name,log:detailsToSend
+    }
+    await ApiCalls.logData(tosend)
     this.setState({
       details: details,
     });
@@ -53,14 +87,15 @@ export default class WorkoutInputTableComponent extends Component {
     console.log("added set");
   }
   render() {
-    const { details } = this.state;
-    console.log("details", details);
+    const { details ,lastWorkoutLog} = this.state;
+    console.log("render",lastWorkoutLog)
     return (
       <div className="input-table">
         <Table unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Set</Table.HeaderCell>
+              <Table.HeaderCell>Previous Lifted</Table.HeaderCell>
               <Table.HeaderCell>Lifted</Table.HeaderCell>
               <Table.HeaderCell>Kg</Table.HeaderCell>
               <Table.HeaderCell>Reps</Table.HeaderCell>
@@ -70,9 +105,13 @@ export default class WorkoutInputTableComponent extends Component {
 
           <Table.Body>
             {details.map((elem, idx) => {
+              console.log("idx",idx)
               return (
                 <Table.Row>
                   <Table.Cell>{idx + 1}</Table.Cell>
+                  <Table.Cell>
+                    {lastWorkoutLog[idx]?lastWorkoutLog[idx].kg +" KG":"-"}*{lastWorkoutLog[idx]?lastWorkoutLog[idx].reps+" reps":"-"}
+                  </Table.Cell>
                   <Table.Cell>
                     {details[idx].kg}*{details[idx].reps}
                   </Table.Cell>
@@ -115,6 +154,7 @@ export default class WorkoutInputTableComponent extends Component {
               </Button>
             </div>
           </Table.Body>
+          
         </Table>
       </div>
     );

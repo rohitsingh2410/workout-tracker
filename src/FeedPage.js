@@ -13,15 +13,13 @@ export default class FeedPage extends Component {
 constructor(props) {
     super(props);
     this.state = {
-        posts:[]
+        user:null
     }
 }
   async componentDidMount() {
-    // let posts = await ApiCalls.getPosts();
-    // posts=posts.slice(0,100)
-    // this.setState({posts: posts});
-    // console.log("posts",posts);
-
+    let user= await ApiCalls.getuserInfo();
+    console.log("user",user.data)
+    this.setState({user: user.data});
   }
 
   render() {
@@ -32,7 +30,7 @@ constructor(props) {
       <div className="container">
         
       </div>
-      <Navigator/>
+      <Navigator user={this.state.user}/>
       <NoWorkoutRecords/>
       <PlanLayout/>
       <MainPageLineGraph/>

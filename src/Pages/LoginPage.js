@@ -7,10 +7,11 @@ import {
   Radio,
   Select,
   TextArea,
+  Message,
 } from "semantic-ui-react";
 import "../Styles/RegisterPage.css";
 import { Validators } from "../Validators";
-
+import { ApiCalls } from "../ApiCalls";
 const options = [
   { key: "m", text: "Male", value: "male" },
   { key: "f", text: "Female", value: "female" },
@@ -25,9 +26,17 @@ class LoginPage extends Component {
     err_email: "",
     err_gender: "",
     err_password: "",
+    buttonbusy: false,
+    loginError: "",
   };
 
   handleChange = async (e, { errClass, name, value }) => {
+    let { loginError } = this.state;
+    if (loginError) {
+      this.setState({
+        loginError: "",
+      });
+    }
     let status = await Validators.validateString(value, name);
     this.setState({
       [errClass]: status.message,
@@ -45,11 +54,34 @@ class LoginPage extends Component {
     }
     this.setState({ [name]: value });
   };
-  register(e) {
+  async login(e) {
     e.preventDefault();
+    this.setState({ buttonbusy: true });
+    let { email, password } = this.state;
+    let payload = {
+      identifier: email,
+      password: password,
+    };
+    console.log(payload);
+    let loginUser = await ApiCalls.login(payload);
+    console.log("loginUser", loginUser);
+    if (!loginUser.status) {
+      this.setState({
+        loginError: loginUser.data,
+        buttonbusy: false,
+      });
+    } else {
+      // redirectt and save jwt.
+      window.location = "/feed";
+    }
   }
   redirect(path) {
     window.location = path;
+  }
+  sendMail(e) {
+    e.preventDefault();
+
+    window.location.href = "support@vtx.com";
   }
   render() {
     const {
@@ -61,8 +93,9 @@ class LoginPage extends Component {
       err_name,
       err_confirm,
       err_email,
-      err_gender,
+      loginError,
       err_password,
+      buttonbusy,
     } = this.state;
     return (
       <div className="register-page-container">
@@ -105,11 +138,23 @@ class LoginPage extends Component {
                 }
               />
             </Form.Group>
-
+            {loginError ? <Message color="red">{loginError}</Message> : ""}
             <div className="form-group-end">
-              <Button basic color="blue" onClick={(e) => this.register(e)}>
-                Login
-              </Button>
+              {buttonbusy ? (
+                <Button
+                  basic
+                  color="blue"
+                  disabled={true}
+                  onClick={(e) => this.login(e)}
+                >
+                  Loggin in ......
+                </Button>
+              ) : (
+                <Button basic color="blue" onClick={(e) => this.login(e)}>
+                  Login
+                </Button>
+              )}
+
               <span style={{ marginTop: "5%" }}>
                 Need an account?{" "}
                 <a
@@ -118,6 +163,9 @@ class LoginPage extends Component {
                 >
                   Create One
                 </a>
+              </span>
+              <span style={{ marginTop: "5%" }}>
+                Need Help? <a href="mailto:info@info.eu">Click Here</a>
               </span>
             </div>
           </Form>
