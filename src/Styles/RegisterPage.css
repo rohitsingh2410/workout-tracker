@@ -7,9 +7,16 @@
     display: flex;
     justify-content: center;
     height: 100%;
+    background: ivory;
+
 }
 
 .form-group-end{
     display: flex;
     flex-direction: column;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
 }

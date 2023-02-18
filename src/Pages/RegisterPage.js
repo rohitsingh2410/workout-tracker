@@ -6,12 +6,14 @@ import {
   Input,
   Radio,
   Select,
-  TextArea,
+  Image,
   Message,
 } from "semantic-ui-react";
 import "../Styles/RegisterPage.css";
 import { Validators } from "../Validators";
 import { ApiCalls } from "../ApiCalls";
+import LOGO from "../assets/logo.png";
+
 const options = [
   { key: "m", text: "Male", value: "male" },
   { key: "f", text: "Female", value: "female" },
@@ -95,6 +97,9 @@ class RegisterPage extends Component {
       <div className="register-page-container">
         <div className="register-page-form">
           <Form>
+          <div className="logo-container">
+          <Image src={LOGO} size='tiny' circular />
+          </div>
             <Form.Group widths="equal">
               <Form.Field
                 control={Input}
