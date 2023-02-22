@@ -26,7 +26,7 @@ function App() {
         <Route exact path="/stats" component={Stats} />
         <Route exact path="/community" component={Community} />
         <Route exact path="/settings" component={Settings} />
-        <Route path="*" element={PageNotFound} />
+        <Route  component={PageNotFound} />
       </Switch>
       <BottomNavBar/>
     </BrowserRouter>
