@@ -19,8 +19,12 @@ export default function PlanLayout() {
   }
 
   return (
-    <div>
-      <h3>My Plans</h3>
+    <div className="plans-container" style={ {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+  }}>
+      <h3>Choose an Option</h3>
 
       <div className="plans">
       <img alt="img" src={starWorkout} onClick={(e)=>routeChange("/workoutlists")} />

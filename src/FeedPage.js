@@ -6,14 +6,14 @@ import "./Styles/FeedPage.css";
 import NoWorkoutRecords from './components/NoWorkoutRecords';
 import PlanLayout from './components/PlanLayout';
 import MainPageLineGraph from './components/MainPageLineGraph';
-
+import EmptyLoader from './components/EmptyLoader';
 
 export default class FeedPage extends Component {
 
 constructor(props) {
     super(props);
     this.state = {
-        user:null
+        user:null,
     }
 }
   async componentDidMount() {
@@ -23,18 +23,22 @@ constructor(props) {
   }
 
   render() {
-    const {posts}=this.state;
-    
-    return (
-      <div className="feedPage">
-      <div className="container">
+    const {user}=this.state;
+    if(user){
+      return (
+        <div className="feedPage">
+        <div className="container">
+        <Navigator user={this.state.user}/>
+        <NoWorkoutRecords/>
+        <PlanLayout/>
+        <MainPageLineGraph/>
+        </div>
         
-      </div>
-      <Navigator user={this.state.user}/>
-      <NoWorkoutRecords/>
-      <PlanLayout/>
-      <MainPageLineGraph/>
-      </div>
-    )
+        </div>
+      )
+    }else{
+      <EmptyLoader/>
+    }
+    
   }
 }

@@ -17,6 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
+      <Route exact path="/" component={FeedPage} />
         <Route exact path="/feed" component={FeedPage} />
         <Route exact path="/addworkout" component={AddWorkoutPage} />
         <Route exact path="/workoutlists" component={WorkoutListsPage} />

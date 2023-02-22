@@ -107,7 +107,7 @@ class RegisterPage extends Component {
                 name="name"
                 errClass="err_name"
                 value={name}
-                placeholder="Full name"
+                placeholder="First name"
                 onChange={this.handleChange}
                 error={
                   err_name

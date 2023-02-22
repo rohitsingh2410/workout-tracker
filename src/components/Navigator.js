@@ -10,7 +10,6 @@ export default function Navigator({ user }) {
   }
 
   return (
-    <div>
       <div className="navigator-container">
         <div className="user-profile">
           <Header as="h2">
@@ -28,6 +27,5 @@ export default function Navigator({ user }) {
         </div>
         <Icon  name='setting' size='large' onClick={(e)=>redirect("/settings")} />
       </div>
-    </div>
   );
 }
