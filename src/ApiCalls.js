@@ -4,7 +4,7 @@ import moment from "moment";
 
 export class ApiCalls {
   static async tokenExpired(){
-    //window.location='/login'
+    window.location='/login'
   }
   static async getuserInfo() {
     let token = await localStorage.getItem("token");
