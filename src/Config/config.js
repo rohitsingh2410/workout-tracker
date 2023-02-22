@@ -1,4 +1,5 @@
-export const API_URL = "https://mygympal.online"
+export const API_URL = "https://api.mygympal.online"
+//export const API_URL = "http://127.0.0.1:1337"
 
 
 
