@@ -20,6 +20,7 @@ function App() {
       <Route exact path="/" component={FeedPage} />
         <Route exact path="/feed" component={FeedPage} />
         <Route exact path="/addworkout" component={AddWorkoutPage} />
+        <Route exact path="/editworkout" component={AddWorkoutPage} />
         <Route exact path="/workoutlists" component={WorkoutListsPage} />
         <Route exact path="/workout" component={WorkoutsPage} />
         <Route exact path="/register" component={RegisterPage} />

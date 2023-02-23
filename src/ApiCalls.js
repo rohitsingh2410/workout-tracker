@@ -86,7 +86,57 @@ export class ApiCalls {
       return { status: false, message: e.response.data.error.message };
     }
   }
-
+  static async updateWorkout(data,id) {
+    let token = await localStorage.getItem("token");
+    try {
+      let updateWorkoutSplit = await axios.put(
+        `${API_URL}/api/user-workout-splits/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("updateWorkoutSplit", updateWorkoutSplit);
+      if (updateWorkoutSplit.status === 200) {
+        // save jwt to local storage and redirect.
+        return { status: true };
+      } else {
+      }
+    } catch (e) {
+      if(e.response.status===401){
+        this.tokenExpired()
+      }
+      console.log("error", e.response.data.error.message);
+      return { status: false, message: e.response.data.error.message };
+    }
+  }
+  static async deleteWorkout(id) {
+    let token = await localStorage.getItem("token");
+    try {
+      let deleteWorkout = await axios.delete(
+        `${API_URL}/api/user-workout-splits/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("deleteWorkout", deleteWorkout);
+      if (deleteWorkout.status === 200) {
+        // save jwt to local storage and redirect.
+        return { status: true };
+      } else {
+      }
+    } catch (e) {
+      if(e.response.status===401){
+        this.tokenExpired()
+      }
+      console.log("error", e.response.data.error.message);
+      return { status: false, message: e.response.data.error.message };
+    }
+  }
   static async fetchMyWorkout(data) {
     let token = await localStorage.getItem("token");
     try {

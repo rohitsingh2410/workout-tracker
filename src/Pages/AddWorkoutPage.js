@@ -9,10 +9,13 @@ export default class AddWorkoutPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      busyButton:false,
+      id:null,
       isDataAvailable: false,
       splitName: "",
       splitComments: "",
       splitDetailsAdded: false,
+      editMode: false,
       dailyLog: [
         {
           name: "workout Monday",
@@ -45,6 +48,25 @@ export default class AddWorkoutPage extends Component {
       ],
     };
   }
+  async componentDidMount(){
+    console.log("Current URL",window.location.href)
+    if(window.location.href.split("/")[3]==="editworkout"){
+      const query = new URLSearchParams(this.props.location.search);
+      const id = query.get("id");
+      let dates=await ApiCalls.getCurrentWeek()
+      let getWorkoutByID = await ApiCalls.getWorkoutByID(id);
+      let prevLog=getWorkoutByID.data.attributes.workouts
+      console.log("getWorkoutByID",getWorkoutByID)
+      this.setState({
+        id:id,
+        splitDetailsAdded:true,
+        editMode:true,
+        dailyLog:prevLog,
+        splitName:getWorkoutByID.data.attributes.splitName,
+        splitComments:getWorkoutByID.data.attributes.splitComments
+      })
+    }
+  }
   setDailyLog(e) {
     this.setState({
       dailyLog: e,
@@ -63,6 +85,10 @@ export default class AddWorkoutPage extends Component {
   }
   async submit(e, type) {
     e.preventDefault();
+    this.setState({
+      busyButton:true
+    })
+    const{editMode,id}=this.state;
     console.log("type", type);
     if (type === "cancel") {
       window.location = "/feed";
@@ -73,14 +99,24 @@ export default class AddWorkoutPage extends Component {
       splitComments: this.state.splitComments,
       dailyLog: this.state.dailyLog,
     };
-    let create = await ApiCalls.createWorkout(workout);
+    if(editMode){
+      delete workout.dailyLog;
+      workout['workouts']=this.state.dailyLog;
+      let update = await ApiCalls.updateWorkout({data:workout},id);
+      if(update.status){
+        window.location = "/feed";
+      }
+    }
+    else{
+      let create = await ApiCalls.createWorkout(workout);
     if(create.status){
       window.location = "/feed";
     }
     console.log("create", create);
+    }
   }
   render() {
-    let { dailyLog, splitDetailsAdded, splitName, splitComments } = this.state;
+    let { dailyLog, splitDetailsAdded, splitName, splitComments,busyButton ,editMode} = this.state;
     return (
       <div className="workout-page-container">
         <HeaderComponent
@@ -201,9 +237,12 @@ export default class AddWorkoutPage extends Component {
                   Cancel
                 </Button>
                 <Button.Or />
+                {busyButton?<Button positive disabled={true}>
+                  {"Saving.."}
+                </Button>:
                 <Button positive onClick={(e) => this.submit(e, "submit")}>
-                  Save
-                </Button>
+                  {editMode?"Update & finish":"Save & finish"}
+                </Button>}
               </Button.Group>
             </div>
           </>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Label, Menu, Table, Button } from "semantic-ui-react";
+import { Icon, Label, Menu, Table, Button,Confirm } from "semantic-ui-react";
 import HeaderComponent from "../components/HeaderComponent";
 import { ApiCalls } from "../ApiCalls";
 
@@ -7,6 +7,8 @@ export default class WorkoutListsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      deleteConfirm:false,
+      awatingConfirmID:null,
       workoutLists: [],
     };
   }
@@ -17,16 +19,32 @@ export default class WorkoutListsPage extends Component {
       workoutLists: list.data,
     });
   }
-  action(id, action) {
+  async action(id, action) {
     console.log(id, action);
+    const {deleteConfirm,workoutLists}=this.state;
     switch (action) {
       case "open":
         window.location = `/workout/?id=${id}`;
         break;
       case "edit":
+        window.location = `/editworkout/?id=${id}`;
         break;
 
       case "delete":
+        if(deleteConfirm){
+          let status =  await ApiCalls.deleteWorkout(id);
+          if(status.status){
+            window.location.reload()
+            
+          }
+        }else{
+          this.setState({
+            deleteConfirm:true,
+            awatingConfirmID:id
+          })
+        }
+        
+
         break;
 
       case "no-workout-action":
@@ -36,8 +54,15 @@ export default class WorkoutListsPage extends Component {
         break;
     }
   }
+  closeDeleteModal(e){
+    e.preventDefault();
+    this.setState({
+      deleteConfirm:false,
+      awatingConfirmID:null
+    })
+  }
   render() {
-    const { workoutLists } = this.state;
+    const { workoutLists ,deleteConfirm,awatingConfirmID} = this.state;
     return (
       <div className="workout-list-table">
         <HeaderComponent
@@ -57,6 +82,7 @@ export default class WorkoutListsPage extends Component {
             </Table.Header>
 
             <Table.Body>
+             
               {workoutLists.map((elem, idx) => {
                 return (
                   <Table.Row key={elem.id}>
@@ -85,6 +111,12 @@ export default class WorkoutListsPage extends Component {
                   </Table.Row>
                 );
               })}
+              {console.log("deleteConfirm",deleteConfirm)}
+               <Confirm
+                open={deleteConfirm}
+                onCancel={(e)=>this.closeDeleteModal(e)}
+                onConfirm={(e)=>this.action(awatingConfirmID,'delete')}
+              />
             </Table.Body>
           </Table>
         ) : (
