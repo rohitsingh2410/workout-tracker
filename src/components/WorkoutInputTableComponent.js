@@ -136,7 +136,7 @@ export default class WorkoutInputTableComponent extends Component {
                     <input
                       type="number"
                       placeholder="KG"
-                      pattern="\d*"
+                      inputMode="decimal"
                       name="kg"
                       className="small-size-input"
                       value={details[idx].kg}
@@ -146,7 +146,7 @@ export default class WorkoutInputTableComponent extends Component {
                   <Table.Cell>
                     <input
                       type="number"
-                      pattern="\d*"
+                      inputMode="decimal"
                       placeholder="0"
                       className="small-size-input"
                       name="reps"
