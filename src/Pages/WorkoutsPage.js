@@ -124,7 +124,7 @@ export default class WorkoutsPage extends Component {
                             </Accordion>
                           );
                         })}
-                        <Button basic color="blue" content="Save Progress" />
+                        
                       </Tab.Pane>
                     ),
                   },
@@ -167,7 +167,7 @@ export default class WorkoutsPage extends Component {
                             </Accordion>
                           );
                         })}
-                        <Button basic color="blue" content="Save Progress" />
+                        
                       </Tab.Pane>
                     ),
                   },
@@ -210,7 +210,7 @@ export default class WorkoutsPage extends Component {
                             </Accordion>
                           );
                         })}
-                        <Button basic color="blue" content="Save Progress" />
+                        
                       </Tab.Pane>
                     ),
                   },
@@ -253,7 +253,7 @@ export default class WorkoutsPage extends Component {
                             </Accordion>
                           );
                         })}
-                        <Button basic color="blue" content="Save Progress" />
+                        
                       </Tab.Pane>
                     ),
                   },
@@ -296,7 +296,7 @@ export default class WorkoutsPage extends Component {
                             </Accordion>
                           );
                         })}
-                        <Button basic color="blue" content="Save Progress" />
+                        
                       </Tab.Pane>
                     ),
                   },
@@ -339,7 +339,7 @@ export default class WorkoutsPage extends Component {
                             </Accordion>
                           );
                         })}
-                        <Button basic color="blue" content="Save Progress" />
+                        
                       </Tab.Pane>
                     ),
                   },
@@ -382,7 +382,7 @@ export default class WorkoutsPage extends Component {
                             </Accordion>
                           );
                         })}
-                        <Button basic color="blue" content="Save Progress" />
+                        
                       </Tab.Pane>
                     ),
                   },

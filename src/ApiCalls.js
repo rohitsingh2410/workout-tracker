@@ -244,7 +244,7 @@ export class ApiCalls {
       console.log("searchlog", searchlog);
       if (searchlog.status === 200) {
         // save jwt to local storage and redirect.
-        console.log("here......")
+        console.log("here......",data,searchlog.data.data)
         return { status: searchlog.data.status, data: searchlog.data.data,lastWorkoutLog:searchlog.data.lastWorkoutLog };
       } else {
       }

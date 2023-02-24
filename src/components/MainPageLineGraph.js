@@ -91,15 +91,23 @@ export default class MainPageLineGraph extends Component {
 
       data.workoutsPerformed=['Total Monthly Volume'].concat(data.workoutsPerformed)
       // data.workoutsPerformed.push("Total Monthly Volume");
+      var dateObj = new Date();
+      var day = dateObj.getUTCDate();
+      var selectedOptionIdx=0;
+      if(day>15){
+        selectedOptionIdx=1
+      }
+      console.log("selectedOptionIdx",selectedOptionIdx)
       this.setState({
-        selectedOptionIdx:0,
+        selectedOptionIdx:selectedOptionIdx,
+        idx:selectedOptionIdx,
         workoutsPerformed: data.workoutsPerformed,
         data: {
-          labels: monthSegments[0],
+          labels: monthSegments[selectedOptionIdx],
           datasets: [
             {
               label: "Total Monthly Volume",
-              data: setData[0],
+              data: setData[selectedOptionIdx],
               borderColor: "rgb(255, 99, 132)",
               backgroundColor: "rgba(255, 99, 132, 0.5)",
             },

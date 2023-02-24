@@ -15,6 +15,9 @@ export default class WorkoutInputTableComponent extends Component {
     };
   }
   async componentDidMount() {
+    await this.mountData()
+  }
+  async mountData() {
     const { workoutDetails } = this.props;
     console.log("workoutDetails", workoutDetails);
     let date = workoutDetails.date;
@@ -49,6 +52,20 @@ export default class WorkoutInputTableComponent extends Component {
       details: currentContent,
     });
   }
+ async componentDidUpdate(prevProps,prevState) {
+    console.log("componentDidUpdate",this.props,prevProps);
+    if(prevProps.workoutDetails.date !== this.props.workoutDetails.date){
+      this.setState({
+        repsToPerform: 0,
+        setsToPerform: 0,
+        workoutName: "",
+        details: [],
+        lastWorkoutLog:[]
+      })
+      await this.mountData()
+
+    }
+  }
 
   handleChange(e, idx) {
     console.log(e.target);
@@ -64,7 +81,9 @@ export default class WorkoutInputTableComponent extends Component {
     let date = workoutDetails.date;
     let details = this.state.details;
     details[idx].done = !details[idx].done;
-    
+    this.setState({
+      details: details,
+    });
     let detailsToSend = details.filter(function(detail) {
       return detail.done===true
     })
@@ -73,14 +92,12 @@ export default class WorkoutInputTableComponent extends Component {
       date:date,workoutName:workoutDetails.name,log:detailsToSend
     }
     await ApiCalls.logData(tosend)
-    this.setState({
-      details: details,
-    });
+   
   }
   increaseSets(e) {
     e.preventDefault();
     let details = this.state.details;
-    details.push({ reps: 0, kg: 0, done: false });
+    details.push({ reps: null, kg: null, done: false });
     this.setState({
       details: details,
     });
@@ -119,6 +136,7 @@ export default class WorkoutInputTableComponent extends Component {
                     <input
                       type="number"
                       placeholder="KG"
+                      pattern="\d*"
                       name="kg"
                       className="small-size-input"
                       value={details[idx].kg}
@@ -128,6 +146,7 @@ export default class WorkoutInputTableComponent extends Component {
                   <Table.Cell>
                     <input
                       type="number"
+                      pattern="\d*"
                       placeholder="0"
                       className="small-size-input"
                       name="reps"
