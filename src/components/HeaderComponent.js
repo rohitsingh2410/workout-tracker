@@ -10,10 +10,14 @@ import { Header, Icon } from "semantic-ui-react";
 
  }
  * */
+ 
 export default function HeaderComponent(props) {
+  const redirect= ()=>{
+    window.location="/feed";
+   }
   return (
     <Header as={props.size ? props.size : "h2"}  textAlign='center'>
-      <Icon name={props.iconName ? props.iconName : ""} size='tiny'/>
+      <Icon name={props.iconName ? props.iconName : ""} onClick={redirect} size='tiny'/>
       <Header.Content>
         {props.headerMainContent ? props.headerMainContent : ""}
         <Header.Subheader>
