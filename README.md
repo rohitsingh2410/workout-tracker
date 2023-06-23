@@ -1,6 +1,7 @@
 # A web app to track your workout and make sure you're able to proressively overload in gym. App provide interactive progess chats of overall workout volume and adjus sets and reps weekly to help user progressively overload and lift more weights in gym.
 
-
+## web-App live now for mobile view:
+https://mygympal.online
 ## Available Scripts
 
 In the project directory, you can run:
